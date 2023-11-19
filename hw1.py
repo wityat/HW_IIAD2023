@@ -1,8 +1,9 @@
 import time
 import numpy as np
+import numba
 
-
-def match_timestamps(timestamps1: np.ndarray, timestamps2: np.ndarray) -> np.ndarray:
+@numba.jit(nopython=True)
+def match_timestamps(timestamps1: np.ndarray, timestamps2: np.ndarray) -> np.ndarray[np.int64]:
     """
     Timestamp matching function. It returns such array `matching` of length len(timestamps1),
     that for each index i of timestamps1 the output element matching[i] contains
@@ -15,7 +16,7 @@ def match_timestamps(timestamps1: np.ndarray, timestamps2: np.ndarray) -> np.nda
     """
 
     if len(timestamps1) == 0 or len(timestamps2) == 0:
-        return np.empty(0)
+        return np.empty(0, dtype=np.int64)
 
     matching = []
     j = 0
